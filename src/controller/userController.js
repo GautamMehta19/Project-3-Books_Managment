@@ -2,6 +2,8 @@ const userModel = require('../model/userModel')
 const validator = require('../validation/validation')
 const jwt = require("jsonwebtoken");
 const _ = require("lodash")
+
+
 //***************************************** createUser **********************************************************/
 
 const createUser = async function (req, res) {
@@ -92,7 +94,6 @@ const createUser = async function (req, res) {
         }
 
         if (!validator.validatePassword(password, res)) return;
-
        
         if (address) {
 
@@ -154,6 +155,7 @@ const createUser = async function (req, res) {
 
 //***************************************** LoginUser **********************************************************/
 
+
 const userLogin = async function (req, res) {
 
     try {
@@ -185,8 +187,10 @@ const userLogin = async function (req, res) {
 
         const user = await userModel.findOne({ email: email, password: password })
         if (!user) {
-            return res.status(401).send({ status: false, message: "Make sure your login Credentials are correct or not " })
-
+            return res.status(401).send({ 
+                status: false, 
+                message: "Make sure your login Credentials are correct or not " 
+            })
         }
 
         const token = await jwt.sign({
@@ -196,7 +200,10 @@ const userLogin = async function (req, res) {
         }, "my@third@project@book@management")
 
         res.setHeader('x-api-key', token)
-        res.status(201).send({ status: true, message: 'user login successfully', data: token })
+        res.status(201).send({ 
+            status: true, 
+            message: 'user login successfully', data: token 
+        })
 
     } catch (error) {
         return res.status(500).send({

@@ -54,6 +54,3 @@ module.exports.validatePassword = validatePassword
 module.exports.isValidObjectId = isValidObjectId
 module.exports.isValidString = isValidString 
 module.exports.validateSubCategory= validateSubCategory
-
-
-

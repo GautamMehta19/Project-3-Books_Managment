@@ -36,13 +36,6 @@ const createReview = async function (req, res) {
             })
         }
 
-        // if (!reviewedBy) {
-        //     return res.status(400).send({
-        //         status: false,
-        //         message: "reviewedBy is mandatory"
-        //     })
-        // }
-
         if(reviewedBy){
            
             if (!validator.isValidString(reviewedBy)) {
@@ -51,7 +44,6 @@ const createReview = async function (req, res) {
                     message: "reviewedBy should be string & can't be empty"
                 })
             }
-
         }
 
         if (!isNaN(reviewedBy)) {
@@ -85,7 +77,6 @@ const createReview = async function (req, res) {
                 message: " Please enter current date with format : YYYY-MM-DD "
             })
         }
-
 
         reviewData.reviewedAt = moment().format("YYYY-MM-DDThh:mm:ss.SSS[Z]")
 
@@ -227,7 +218,6 @@ const updateReviewById = async function (req, res) {
 
             updateQuery["reviewedBy"] = req.body["reviewer's name"]
         }
-
 
         if (rating) {
             if (isNaN(rating)) {

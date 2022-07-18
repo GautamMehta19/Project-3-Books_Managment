@@ -8,7 +8,8 @@ const auth= require("../middleware/auth")
    
 router.post('/register', userController.createUser)
 
- router.post('/login', userController.userLogin)
+router.post('/login', userController.userLogin)
+
 
 router.post('/books', auth.authentication, bookController.createBook)
 
@@ -23,9 +24,7 @@ router.delete('/books/:bookId', auth.authentication, auth.authorisationByParams,
 
 router.post('/books/:bookId/review', reviewController.createReview)
 
-
 router.put('/books/:bookId/review/:reviewId', reviewController.updateReviewById)
-
 
 router.delete('/books/:bookId/review/:reviewId', reviewController.deleteReviewById)
 
@@ -40,20 +39,3 @@ router.all("/****", function (req, res) {
 
 
 module.exports = router
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

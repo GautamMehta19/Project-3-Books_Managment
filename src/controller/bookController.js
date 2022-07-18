@@ -12,8 +12,8 @@ const createBook = async function (req, res) {
     try {
         console.log(req.files, req.body);
         let data = req.body
-        let { title, excerpt, ISBN, category, subcategory, releasedAt} = data
-        
+        let { title, excerpt, ISBN, category, subcategory, releasedAt } = data
+
 
         if (!title) {
             return res.status(400).send({
@@ -77,7 +77,6 @@ const createBook = async function (req, res) {
         let testing2 = /^[0-9X ]{17}$/          //ISBN-13       978 0 123456 47 2
         let testing3 = /^[0-9X ]{13}$/     // ISBN-10     0 123456 47 9
 
-
         if (!(valid13ISBN.test(ISBN) || valid10ISBN.test(ISBN) || valtesting.test(ISBN) || testing1.test(ISBN) || testing2.test(ISBN) || testing3.test(ISBN))) {
             return res.status(400).send({
                 status: false,
@@ -131,7 +130,6 @@ const createBook = async function (req, res) {
             })
         }
 
-
         if (!releasedAt) {
             return res.status(400).send({
                 status: false,
@@ -149,7 +147,6 @@ const createBook = async function (req, res) {
         let today = new Date();
         let date = today.getFullYear() + '-' + '0' + (today.getMonth() + 1) + '-' + today.getDate();
 
-
         if (!(date == releasedAt)) {
             return res.status(400).send({
                 status: false,
@@ -158,25 +155,19 @@ const createBook = async function (req, res) {
         }
         data.releasedAt = new Date().toISOString()
 
-
-
-
-        if(req.files[0]){
-
-        let files = req.files
-
-        console.log(files, "hello", files.length);
-        if (files && files.length > 0) {
-            //upload to s3 and get the uploaded link
-            // res.send the link back to frontend/postman
-            var uploadedFileURL = await uploadFile(files[0])
-            //    console.log(uploadedFileURL);
-            //    return res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
-        }
-        else {
-            return res.status(400).send({ msg: "No file found" })
-        }
-
+        if (req.files[0]) {
+            let files = req.files
+            console.log(files, "hello", files.length);
+            if (files && files.length > 0) {
+                //upload to s3 and get the uploaded link
+                // res.send the link back to frontend/postman
+                var uploadedFileURL = await uploadFile(files[0])
+                //    console.log(uploadedFileURL);
+                //    return res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
+            }
+            else {
+                return res.status(400).send({ msg: "No file found" })
+            }
         }
 
         data.bookCover = uploadedFileURL
@@ -197,7 +188,6 @@ const createBook = async function (req, res) {
             message: err.message
         })
     }
-
 }
 
 
@@ -221,7 +211,6 @@ let uploadFile = async (file) => {
             Body: file.buffer
         }
 
-
         s3.upload(uploadParams, function (err, data) {
             if (err) {
                 return reject({ "error": err })
@@ -237,23 +226,6 @@ let uploadFile = async (file) => {
 
     })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //***************************************** getBook **********************************************************/
@@ -337,7 +309,6 @@ const getBookById = async function (req, res) {
             message: "Book List",
             data: bookWithReviews
         })
-
     }
     catch (err) {
         return res.status(500).send({
@@ -410,7 +381,6 @@ const updateBookById = async function (req, res) {
 
         if (req.body["release date"]) {
 
-
             if (!/^\d{4}-\d{2}-\d{2}$/.test(req.body["release date"])) {
                 return res.status(400).send({
                     status: false,
@@ -421,9 +391,6 @@ const updateBookById = async function (req, res) {
             let today = new Date();
             let date = today.getFullYear() + '-' + '0' + (today.getMonth() + 1) + '-' + today.getDate();
 
-
-
-
             if (!(date == req.body["release date"])) {
                 return res.status(400).send({
                     status: false,
@@ -431,9 +398,7 @@ const updateBookById = async function (req, res) {
                 })
             }
 
-            // req.body["release date"] = new Date().toISOString()
-
-
+            req.body["release date"] = new Date().toISOString()
 
             updateQuery["releasedAt"] = req.body["release date"]
         }
@@ -450,15 +415,13 @@ const updateBookById = async function (req, res) {
             let today = new Date();
             let date = today.getFullYear() + '-' + '0' + (today.getMonth() + 1) + '-' + today.getDate();
 
-
             if (!(date == req.body["releasedAt"])) {
                 return res.status(400).send({
                     status: false,
                     message: " Please enter current date with format : YYYY-MM-DD "
                 })
             }
-
-            // updateQuery["releasedAt"] = new Date().toISOString
+            updateQuery["releasedAt"] = new Date().toISOString
         }
 
         if (ISBN) {
@@ -485,7 +448,6 @@ const updateBookById = async function (req, res) {
                     message: "book already present with this ISBN"
                 })
             }
-
             updateQuery["ISBN"] = ISBN;
         }
 
