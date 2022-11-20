@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use( multer().any() )
 
 
-const monngodb_url="mongodb+srv://NishantGautam:Ng123@cluster0.45vj3.mongodb.net/group44Database";
+const monngodb_url="mongodb+srv://gautam:gautam123@cluster0.xorxp.mongodb.net/project_3_booksManagment";
 
 mongoose.connect(monngodb_url,{useNewUrlParser: true}).then(()=>{ console.log("Hi! MongoDB is connected Now ");})
 .catch ( err => console.log(err) );

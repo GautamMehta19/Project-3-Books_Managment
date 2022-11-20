@@ -94,10 +94,10 @@ const createUser = async function (req, res) {
         }
 
         if (!validator.validatePassword(password, res)) return;
-       
+
         if (address) {
 
-            if(!_.isObject(address)) {
+            if (!_.isObject(address)) {
                 return res.status(400).send({
                     status: false,
                     message: "address should be an object"
@@ -143,13 +143,18 @@ const createUser = async function (req, res) {
         }
 
         let saveData = await userModel.create(data)
-        return res.status(201).send({ 
-            status: true, 
-            message: 'User Successfully Created', 
-            data: saveData 
+        return res.status(201).send({
+            status: true,
+            message: 'User Successfully Created',
+            data: saveData
         })
 
-    } catch (err) { return res.status(500).send({ status: false, message: err.message }) }
+    } catch (err) {
+        return res.status(500).send({
+            status: false,
+            message: err.message
+        })
+    }
 }
 
 
@@ -164,11 +169,11 @@ const userLogin = async function (req, res) {
         const { email, password } = loginData
 
         if (Object.keys(loginData).length == 0) {
-            return res.status(400).send({ 
-                status: false, 
-                message: "login credentials must be presents & only email and password should be inside body" 
+            return res.status(400).send({
+                status: false,
+                message: "login credentials must be presents & only email and password should be inside body"
             })
-            
+
         }
 
         if (!email) {
@@ -187,9 +192,9 @@ const userLogin = async function (req, res) {
 
         const user = await userModel.findOne({ email: email, password: password })
         if (!user) {
-            return res.status(401).send({ 
-                status: false, 
-                message: "Make sure your login Credentials are correct or not " 
+            return res.status(401).send({
+                status: false,
+                message: "Make sure your login Credentials are correct or not "
             })
         }
 
@@ -200,9 +205,9 @@ const userLogin = async function (req, res) {
         }, "my@third@project@book@management")
 
         res.setHeader('x-api-key', token)
-        res.status(201).send({ 
-            status: true, 
-            message: 'user login successfully', data: token 
+        res.status(201).send({
+            status: true,
+            message: 'user login successfully', data: token
         })
 
     } catch (error) {

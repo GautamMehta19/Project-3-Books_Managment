@@ -10,7 +10,7 @@ const aws = require('aws-sdk')
 
 const createBook = async function (req, res) {
     try {
-        console.log(req.files, req.body);
+        // console.log(req.files, req.body);
         let data = req.body
         let { title, excerpt, ISBN, category, subcategory, releasedAt } = data
 
@@ -144,20 +144,20 @@ const createBook = async function (req, res) {
             })
         }
 
-        let today = new Date();
-        let date = today.getFullYear() + '-' + '0' + (today.getMonth() + 1) + '-' + today.getDate();
+        // let today = new Date();
+        // let date = today.getFullYear() + '-' +  (today.getMonth() ) + '-' + today.getDate();
 
-        if (!(date == releasedAt)) {
-            return res.status(400).send({
-                status: false,
-                message: " Please enter current date with format : YYYY-MM-DD "
-            })
-        }
+        // if (!(date == releasedAt)) {
+        //     return res.status(400).send({
+        //         status: false,
+        //         message: " Please enter current date with format : YYYY-MM-DD "
+        //     })
+        // }
         data.releasedAt = new Date().toISOString()
 
         if (req.files[0]) {
             let files = req.files
-            console.log(files, "hello", files.length);
+            // console.log(files, "hello", files.length);
             if (files && files.length > 0) {
                 //upload to s3 and get the uploaded link
                 // res.send the link back to frontend/postman
@@ -182,7 +182,7 @@ const createBook = async function (req, res) {
         })
     }
     catch (err) {
-        console.log(err.message)
+        // console.log(err.message)
         return res.status(500).send({
             status: false,
             message: err.message
@@ -194,8 +194,10 @@ const createBook = async function (req, res) {
 //***************************************** aws-section **********************************************************/
 
 aws.config.update({
-    accessKeyId: "AKIAY3L35MCRVFM24Q7U",
-    secretAccessKey: "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",
+    accessKeyId: "AKIAY3L35MCRZNIRGT6N",
+    // "AKIAY3L35MCRVFM24Q7U",
+    secretAccessKey: "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",
+    //  "qGG1HE0qRixcW1T1Wg1bv+08tQrIkFVyDFqSft4J",
     region: "ap-south-1"
 })
 
@@ -258,7 +260,7 @@ const getBook = async function (req, res) {
             filterQuery["subcategory"] = subcategory
         }
 
-        let allbooks = await bookModel.find(filterQuery).select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, reviews: 1, releasedAt: 1 }).sort({ title: 1 })
+        let allbooks = await bookModel.find(filterQuery).select({ _id: 1, title: 1, excerpt: 1, userId: 1, subcategory:1, category: 1, reviews: 1, releasedAt: 1 }).sort({ title: 1 })
 
         if (allbooks.length == 0) return res.status(404).send({ status: false, message: "No book found" })
 
